@@ -5,7 +5,7 @@ Ini adalah contoh project web PHP (Native) yang mengimplementasikan 3 API yang d
 
 Secara mendasar project ini mencontohkan bagaimana user/client untuk:
 
-1. Upload file ktp dan mengirimnya menggunakan curl php, conto ini dapat anda temukan di file index.php line 132 dan pada halaman ocrcurl.php.
+1. Upload file ktp dan mengirimnya menggunakan curl php, contoh ini dapat anda temukan di file index.php line 132 dan pada halaman ocrcurl.php.
 2. Membuka camera, meminta izin browser google crome untuk mengakses kamera, contoh ini dapat anda temukan pada file index.php line 565.
 3. Mengambil gambar selfie normal, contoh ini dapat anda temukan pada file index.php line 709.
 4. Mengambil gambar acak, contoh ini dapat anda temukan pada file index.php line 626.
