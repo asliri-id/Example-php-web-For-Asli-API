@@ -12,4 +12,4 @@ Secara mendasar project ini mencontohkan bagaimana user/client untuk:
 5. Mengirim data profesional, contoh ini dapat anda temukan pada file index.php line 831 dan pada file profesionalcurl.php.
 6. Mengirim data liveness, contoh ini dapat anda temukan pada file index.php line 861 dan pada file liveness.php.
 
-Adapun file-fle dan directory selain yang diterangkan diatas adalah file-file pendukung berjalanya project ini.
+Adapun file-fle dan directory selain yang diterangkan diatas adalah file-file pendukung berjalannya project ini.
