@@ -90,7 +90,7 @@
 </head>
 
 <body>
-	<div id="loader"></div>
+	<div id="loader"></div> <!-- Animation load data -->
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
@@ -325,8 +325,8 @@
 								&nbsp;
 								<button type="button" onclick="livenessnormalprev()"
 									class="btn btn-danger">Cancel</button>
-								<!-- &nbsp -->
-								<!-- <button class="btn btn-warning mirror-btn" mir="false" target="camera-ktp">Mirror</button> -->
+								
+								
 								<input class="hide-this" name="ktp_photo" type="file" disabled="" required=""
 									accept="image/*;capture=camera" id="input-img-ktp">
 
@@ -363,8 +363,8 @@
 									img-target="img-acak">Ambil</button>
 								&nbsp;
 								<button type="button" onclick="livenessacakprev()" class="btn btn-danger">Batal</button>
-								<!-- &nbsp -->
-								<!-- <button class="btn btn-warning mirror-btn" mir="false" target="camera-ktp">Mirror</button> -->
+								
+
 								<input class="hide-this" name="ktp_photo" type="file" disabled="" required=""
 									accept="image/*;capture=camera" id="input-img-ktp">
 							</div>
@@ -382,7 +382,7 @@
 			</div>
 		</div><!-- /.livenessacakbox -->
 		<div id="resultbox">
-			<!-- resultbox -->
+			<!-- resultbox, menampilkan hasil dari proses hit api proffesional dan liveness -->
 			<h2>Result</h2>
 			<table class="table table-striped">
 				<thead>
@@ -448,7 +448,7 @@
 		document.getElementById("inp").addEventListener("change", readFile);
 	</script>
 
-	<!-- Ajax OCR -->
+	<!-- Ajax OCR, hit api ocr lalu menampilkannya kedalam form -->
 	<script type="text/javascript">
 		function ajaxOcr(x) {
 			loadstart();
@@ -501,7 +501,7 @@
 
 		}
 	</script>
-
+    <!-- Melakukan setup page ketika pertama kali load -->
 	<script type="text/javascript">
 		$(document).ready(function (e) {
 			$("#liveness").hide();
@@ -511,6 +511,10 @@
 			$("#resultbox").hide();
 			$("#ocrnext").prop('disabled', true);
 			$("#gesture").hide();
+			$('.hide-this').hide()
+			//memanggil function open camera
+			openCamera($('#camera-normal')[0])
+			openCamera($('#camera-acak')[0])
 			document.getElementById("loader").style.display = "none";
 
 
@@ -556,18 +560,7 @@
 			$("#livenessacakbox").hide();
 		}
 	</script>
-	<!-- Default declare -->
-	<script type="text/javascript">
-		$(document).ready(function (e) {
-			$('.hide-this').hide()
-			$("#biodata-box").hide();
-
-			openCamera($('#camera-normal')[0])
-			openCamera($('#camera-acak')[0])
-
-
-		})
-	</script>
+	
 
 	<!-- Setting Up Camera -->
 	<script type="text/javascript">
@@ -583,7 +576,7 @@
 		})
 	</script>
 
-	<!-- Camera Script -->
+	<!-- Meminta permission ijin camera di browser -->
 	<script type="text/javascript">
 		function openCamera(video) {
 			// minta izin user
@@ -621,7 +614,7 @@
 		}
 	</script>
 
-	<!-- On CLick Button Capture this -->
+	<!-- mengambil swafoto acak -->
 	<script type="text/javascript">
 		$(".jepret").on("click", function (e) {
 			counterLiveness();
@@ -652,26 +645,14 @@
 
 				img.src = canvas.toDataURL('image/png');
 				document.body.appendChild(img);
-
-				// $("#" + $(this).attr("canvas-target")).show();
-				// $("#" + $(this).attr('camera-target')).hide();
 				$("#" + $(this).attr("img-target")).hide();
-
-
-				// Disable Button
-				// $(this).prop('disabled', true);
-
-
-
 				var imgacak = document.getElementById("imgacak");
-				// var inputx = document.getElementById("file_upload");
-				// inputx.value = canvas.toDataURL('image/png');
+				
 				imgacak.src = canvas.toDataURL('image/png');
 				var dataURL = canvas.toDataURL('image/png', 1.0);
 				var i = i;
 
-
-				console.log('imagename: ' + i);
+				// menyimpan swafoto acak kedalam directory
 				$.ajax({
 					type: "POST",
 					url: "http://localhost/livenessphp/saveimageacak.php",
@@ -690,12 +671,10 @@
 				}
 
 			}
-
-
-
-
 		});
 	</script>
+
+    <!-- set interval untuk melakukan swafoto acak selama 4 detik -->
 	<script type="text/javascript">
 		function counterLiveness() {
 			loadstart();
@@ -705,6 +684,8 @@
 			}, 4000);
 		}
 	</script>
+
+	<!-- mengambil swafoto normal -->
 	<script type="text/javascript">
 		$(".jepret2").on("click", function (e) {
 			var video = $("#" + $(this).attr('camera-target'))[0]
@@ -736,39 +717,26 @@
 
 			$("#" + $(this).attr("canvas-target")).show();
 			$("#" + $(this).attr('camera-target')).hide();
-			$("#" + $(this).attr("img-target")).hide();
-
-
-			// Disable Button
+			$("#" + $(this).attr("img-target")).hide();	
 			$(this).prop('disabled', true);
 
 			livenessnormalprev();
 			var imgacak = document.getElementById("imgnormal");
 			imgacak.src = canvas.toDataURL('image/png');
 			var dataURL = canvas.toDataURL();
-			var dataURL2 = encodeImageFileAsURL($("#img-normal"));
-			// console.log('create image: ' + dataURL);
-			// $.ajax({
-			// 	type: "POST",
-			// 	url: "http://localhost/livenessphp/saveimagenormal.php",
-			// 	data: {
-			// 		imgBase64: dataURL2
-			// 	}
-			// }).done(function (response) {
-			// 	// console.log('saved: ' + response);
-			// });
-
+			var dataURL2 = encodeImageFileAsURL($("#img-normal"));		
 		});
 	</script>
 
 
-	<!-- On CLick Button Capture this -->
+	<!-- On CLick Button done this -->
 	<script type="text/javascript">
 		$("#done").on("click", function (e) {
 			location.reload();
 		});
 	</script>
 
+    <!-- Melakukan random number dari 0 sampai 7 untuk me-rundom gesture -->
 	<script>
 		var numberrandom = Math.floor(Math.random() * 7);
 		if (numberrandom == 5) {
@@ -856,10 +824,11 @@
 			});
 			// liveness
 			var gesture = document.getElementById("gesture").value;
-			// console.log("gesture : "+gesture);
+			
 			var urlliveness = "livenesscurl.php";
-			$.ajax({
 
+			// hit api liveness
+			$.ajax({
 				type: "POST",
 				url: urlliveness,
 				data: {
