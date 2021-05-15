@@ -1,8 +1,15 @@
 <?php
+
+$clientname = $_POST['clientname'];
+$clienttoken = $_POST['clienttoken'];
+$ktp_base64 = $_POST['ktp_image'];
+$url = "https://api.asliri.id:8443/".$clientname."/ocr_extra";
+
+
 $curl = curl_init();
+
 curl_setopt_array($curl, array(
-  //ganti dengan url anda
-  CURLOPT_URL => "https://api.asliri.id:8443/replacewithyoururl",
+  CURLOPT_URL => $url,
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,
@@ -12,8 +19,7 @@ curl_setopt_array($curl, array(
   CURLOPT_CUSTOMREQUEST => "POST",
   CURLOPT_POSTFIELDS => json_encode($_POST),
   CURLOPT_HTTPHEADER => array(
-    //ganti dengan token anda
-    "token: replace with your token here",
+    "token: ".$clienttoken,
     "Content-Type: application/json"
   ),
 ));

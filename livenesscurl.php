@@ -3,6 +3,9 @@
 //get post gestureset acak
 $gesture = $_POST['gestureset'];
 $postdata['gestures_set'] = $gesture;
+$clientname = $_POST['clientname'];
+$clienttoken = $_POST['clienttoken'];
+$url = "https://api.asliri.id:8443/".$clientname."/liveness";
 
 //melakukan perulangan sebanyak 8 kali, untuk mendapatkan 8 foto acak lalu memasukannya kedalam param postdata
 for ($i=0; $i < 8; $i++) { 
@@ -13,8 +16,7 @@ for ($i=0; $i < 8; $i++) {
  
 $curl = curl_init();
 curl_setopt_array($curl, array(
-  //ganti dengan url anda
-  CURLOPT_URL => "https://api.asliri.id:8443/replacewithyoururl",
+  CURLOPT_URL => $url,
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,
@@ -24,8 +26,7 @@ curl_setopt_array($curl, array(
   CURLOPT_CUSTOMREQUEST => "POST",
   CURLOPT_POSTFIELDS => $postdata,
   CURLOPT_HTTPHEADER => array(
-    //ganti dengan token anda
-    "token: replace with your token here",
+    "token: ".$clienttoken,
     'Content-Type: multipart/form-data'
   ),
 ));

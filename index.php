@@ -117,6 +117,38 @@
 		<br>
 		<div class="col-lg-1">
 		</div>
+		<div id="token">
+			<div class="col-lg-10">
+				<h3 class="card-title">Client Detail</h3>
+				<br>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="col-md-4">Cleint Name</label>
+								<div class="col-md-8">
+									<input class="form-control" name="clientname" required id="clientname">
+								</div>
+							</div>
+							<div class="form-group row" id="NIK">
+								<label class="col-md-4">Token API</label>
+								<div class="col-md-8">
+									<input class="form-control" name="clienttoken" required id="clienttoken">
+								</div>
+							</div>
+							<button type="button" onclick="location.href='index.php'"
+								class="btn btn-danger">Reset</button>
+							<button type="button" id="tokennext" name="ocrnext" class="btn btn-primary"
+								onclick="saveToken()">Next</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
 		<div id="ocr">
 			<div class="col-lg-10">
 				<h3 class="card-title">OCR</h3>
@@ -135,7 +167,8 @@
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group row">
-									<label class="col-md-4">Nama <small>( Sesuai KTP )</small></label>
+									<label class="col-md-4">Nama <small>( Sesuai KTP
+											)</small></label>
 									<div class="col-md-8">
 										<input class="form-control" name="name" required id="name">
 									</div>
@@ -187,7 +220,8 @@
 							</div>
 							<div class="col-md-6">
 								<div class="form-group row">
-									<label class="col-md-4">Alamat <small>( Sekarang )</small></label>
+									<label class="col-md-4">Alamat <small>( Sekarang
+											)</small></label>
 									<div class="col-md-8">
 										<input type="text" class="form-control" name="address" id="address" required>
 									</div>
@@ -260,14 +294,16 @@
 				<div class="col-lg-3">
 					<img src="assets/camera.png" alt="..." class="img-thumbnail" width="400" onclick="livenesspasif()"
 						id="imgnormal">
-					<small id="emailHelp" class="form-text text-muted">1. Ambil Swafoto dengan gerakan normal</small>
+					<small id="emailHelp" class="form-text text-muted">1. Ambil Swafoto dengan
+						gerakan normal</small>
 				</div>
 				<div class="col-lg-3">
 
 					<img src="assets/camera.png" alt="..." class="img-thumbnail" width="400" onclick="livenessacak()"
 						id="imgacak">
 
-					<small id="emailHelp" class="form-text text-muted">2. Ambil Swafoto dengan gerakan acak</small>
+					<small id="emailHelp" class="form-text text-muted">2. Ambil Swafoto dengan
+						gerakan acak</small>
 				</div>
 				<div class="col-lg-3"></div>
 			</div>
@@ -277,7 +313,8 @@
 					<h4>Aturan umum Swafoto</h4>
 
 					<ol>
-						<li>Dilarang menggunakan topi, kacamata, ikat kepala, atau aksesoris lainnya yang menutupi
+						<li>Dilarang menggunakan topi, kacamata, ikat kepala, atau aksesoris lainnya
+							yang menutupi
 							wajah.</li>
 						<li>Pandangan harus lurus ke kamera.</li>
 						<li>Tidak ada efek mata merah atau fish.</li>
@@ -321,12 +358,13 @@
 
 								<button class="btn btn-info btn-md jepret2 col-md-4" id="ktp-jepret-button"
 									camera-target="camera-normal" canvas-target="canvas-normal"
-									img-target="img-normal">Take Picture</button>
+									img-target="img-normal">Take
+									Picture</button>
 								&nbsp;
 								<button type="button" onclick="livenessnormalprev()"
 									class="btn btn-danger">Cancel</button>
-								
-								
+
+
 								<input class="hide-this" name="ktp_photo" type="file" disabled="" required=""
 									accept="image/*;capture=camera" id="input-img-ktp">
 
@@ -363,7 +401,7 @@
 									img-target="img-acak">Ambil</button>
 								&nbsp;
 								<button type="button" onclick="livenessacakprev()" class="btn btn-danger">Batal</button>
-								
+
 
 								<input class="hide-this" name="ktp_photo" type="file" disabled="" required=""
 									accept="image/*;capture=camera" id="input-img-ktp">
@@ -451,21 +489,31 @@
 	<!-- Ajax OCR, hit api ocr lalu menampilkannya kedalam form -->
 	<script type="text/javascript">
 		function ajaxOcr(x) {
+			
 			loadstart();
-
 			var send_data = {};
+			var clientname = document.getElementById("clientname").value;
+			var clienttoken = document.getElementById("clienttoken").value;
 
 			send_data['ktp_image'] = x;
+			send_data['clienttoken'] = clientname;
+			send_data['clientname'] = clienttoken;
 
 			// OCR
 			var url = "ocrcurl.php";
+			var x = x;
 			$.ajax({
 				type: "POST",
 				url: url,
-				data: send_data,
+				data:{
+					ktp_image: x,
+					clientname: clientname,
+					clienttoken: clienttoken
+					},
 				success: function (response) {
-					var response = JSON.parse(response)
 					console.log(response)
+					var response = JSON.parse(response)
+					
 					if (response['errors'].ktp_image) {
 						// Show Allert
 						console.log("error");
@@ -501,10 +549,11 @@
 
 		}
 	</script>
-    <!-- Melakukan setup page ketika pertama kali load -->
+	<!-- Melakukan setup page ketika pertama kali load -->
 	<script type="text/javascript">
 		$(document).ready(function (e) {
 			$("#liveness").hide();
+			$("#ocr").hide();
 			$("#biodata-box").hide();
 			$("#livenessnormalbox").hide();
 			$("#livenessacakbox").hide();
@@ -559,8 +608,12 @@
 			$("#liveness").show();
 			$("#livenessacakbox").hide();
 		}
+		function tokennext() {
+			$("#ocr").show();
+			$("#token").hide();
+		}
 	</script>
-	
+
 
 	<!-- Setting Up Camera -->
 	<script type="text/javascript">
@@ -647,7 +700,7 @@
 				document.body.appendChild(img);
 				$("#" + $(this).attr("img-target")).hide();
 				var imgacak = document.getElementById("imgacak");
-				
+
 				imgacak.src = canvas.toDataURL('image/png');
 				var dataURL = canvas.toDataURL('image/png', 1.0);
 				var i = i;
@@ -674,7 +727,7 @@
 		});
 	</script>
 
-    <!-- set interval untuk melakukan swafoto acak selama 4 detik -->
+	<!-- set interval untuk melakukan swafoto acak selama 4 detik -->
 	<script type="text/javascript">
 		function counterLiveness() {
 			loadstart();
@@ -717,14 +770,14 @@
 
 			$("#" + $(this).attr("canvas-target")).show();
 			$("#" + $(this).attr('camera-target')).hide();
-			$("#" + $(this).attr("img-target")).hide();	
+			$("#" + $(this).attr("img-target")).hide();
 			$(this).prop('disabled', true);
 
 			livenessnormalprev();
 			var imgacak = document.getElementById("imgnormal");
 			imgacak.src = canvas.toDataURL('image/png');
 			var dataURL = canvas.toDataURL();
-			var dataURL2 = encodeImageFileAsURL($("#img-normal"));		
+			var dataURL2 = encodeImageFileAsURL($("#img-normal"));
 		});
 	</script>
 
@@ -736,7 +789,7 @@
 		});
 	</script>
 
-    <!-- Melakukan random number dari 0 sampai 7 untuk me-rundom gesture -->
+	<!-- Melakukan random number dari 0 sampai 7 untuk me-rundom gesture -->
 	<script>
 		var numberrandom = Math.floor(Math.random() * 7);
 		if (numberrandom == 5) {
@@ -784,7 +837,8 @@
 			var nama = document.getElementById("name").value;
 			var birthdate = document.getElementById("birthdate").value;
 			var birthplace = document.getElementById("birthplace").value;
-
+			var clientname = document.getElementById("clientname").value;
+			var clienttoken = document.getElementById("clienttoken").value;
 			var base64 = encodeImageFileAsURL($("#img-normal"));
 			var send_data = {};
 			send_data['nik'] = nik;
@@ -793,6 +847,8 @@
 			send_data['birthplace'] = birthplace;
 			send_data['identity_photo'] = "";
 			send_data['selfie_photo'] = base64;
+			send_data['clienttoken'] = clienttoken;
+			send_data['clientname'] = clientname;
 
 			// profesional
 			var url = "profesionalcurl.php";
@@ -810,7 +866,9 @@
 						// alert(response['data']['selfie_photo']);
 						document.getElementById("resultname").innerHTML = response['data']['name'];
 						document.getElementById("resultbirthdate").innerHTML = response['data']['birthdate'];
-						document.getElementById("resultbirthplace").innerHTML = response['data']['birthplace'];
+						document.getElementById("resultbirthplace").innerHTML = response['data'][
+							'birthplace'
+						];
 						document.getElementById("resultselfie").innerHTML = response['data']['selfie_photo'];
 						// document.getElementById("resultliveness").innerHTML = response['data']['name'];
 
@@ -824,7 +882,8 @@
 			});
 			// liveness
 			var gesture = document.getElementById("gesture").value;
-			
+			var clientname = document.getElementById("clientname").value;
+			var clienttoken = document.getElementById("clienttoken").value;
 			var urlliveness = "livenesscurl.php";
 
 			// hit api liveness
@@ -832,8 +891,11 @@
 				type: "POST",
 				url: urlliveness,
 				data: {
-					gestureset: gesture
+					gestureset: gesture,
+					clientname: clientname,
+					clienttoken: clienttoken
 				}
+				
 
 
 			}).done(function (response) {
@@ -864,6 +926,8 @@
 		function ajaxliveness() {
 
 			var gesture = document.getElementById("gesture").value;
+			var clientname = document.getElementById("clientname").value;
+			var clienttoken = document.getElementById("clienttoken").value;
 			// liveness
 			var urlliveness = "livenesscurl.php";
 			$.ajax({
@@ -888,7 +952,17 @@
 			});
 		}
 	</script>
-
+<script>
+		function saveToken() {
+			var clientname = document.getElementById("clientname").value;
+			var clienttoken = document.getElementById("clienttoken").value;
+			if(clientname != "" && clienttoken != ""){
+				tokennext();
+			}else{
+				alert("Credential Required!")
+			}
+		}
+		</script>
 </body>
 
 </html>
