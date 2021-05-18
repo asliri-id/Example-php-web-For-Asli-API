@@ -1,7 +1,6 @@
 <?php
 $clientname = $_POST['clientname'];
 $clienttoken = $_POST['clienttoken'];
-
 $url = "https://api.asliri.id:8443/".$clientname."/verify_profesional";
 
 $curl = curl_init();
